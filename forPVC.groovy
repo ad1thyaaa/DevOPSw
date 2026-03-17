@@ -4,25 +4,27 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                git 'https://github.com/ad1thyaaa/DevOPSw.git'
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                echo "No build step needed for static frontend"
+                sh 'docker build -t aripranchi/2023bcs0051 .'
             }
         }
 
-        stage('Test') {
+        stage('Login Docker Hub') {
             steps {
-                echo "Add tests here if needed"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
+                }
             }
         }
 
-        stage('Deploy') {
+        stage('Push Image') {
             steps {
-                echo "Deploy step goes here (Netlify, server, etc.)"
+                sh 'docker push aripranchi/2023bcs0051'
             }
         }
     }
