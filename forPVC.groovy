@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/ad1thyaaa/DevOPSw.git'
+                Checkout SCM
             }
         }
 
